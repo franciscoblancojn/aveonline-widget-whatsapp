@@ -73,7 +73,8 @@ function AVWW_Component_Form($settings)
                     url,
                     campana:"<?= $_GET["campana"] ?>",
                     name,
-                    phone
+                    phone,
+                    code:"+57"
                 });
 
                 const requestOptions = {

@@ -6,9 +6,32 @@ function AVWW_router_send_contact_post(WP_REST_Request $request) {
     try {
         header('Content-Type: application/json; charset=utf-8');
         $data = json_decode($request->get_body(),true);
+
+        $curl = curl_init();
+        curl_setopt_array($curl, array(
+        CURLOPT_URL => $data['url'],
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_ENCODING => '',
+        CURLOPT_MAXREDIRS => 10,
+        CURLOPT_TIMEOUT => 0,
+        CURLOPT_FOLLOWLOCATION => true,
+        CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+        CURLOPT_CUSTOMREQUEST => 'POST',
+        CURLOPT_POSTFIELDS => json_encode($data),
+        CURLOPT_HTTPHEADER => array(
+            'Accept: application/json',
+            'Content-Type: application/json'
+        ),
+        ));
+        $response = curl_exec($curl);
+        curl_close($curl);
+
+        $response = json_decode($response);
+
         echo wp_json_encode(array(
             "status" => 200,
-            "data"=>$data 
+            "data"=>$data ,
+            "response"=>$response ,
         ));
     } catch (Exception $e) {
         echo wp_json_encode(array(

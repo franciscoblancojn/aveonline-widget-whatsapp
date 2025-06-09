@@ -206,10 +206,38 @@ class AVWW_AveFormWhatsapp extends Widget_Base
         );
         $this->end_controls_section();
     }
+    private function _register_controls_api()
+    {
+        $this->start_controls_section(
+            'content_section_api',
+            [
+                'label' => __('Api', 'plugin-name'),
+                'tab' => Controls_Manager::TAB_CONTENT,
+            ]
+        );
+        $this->add_control(
+            'api_url',
+            [
+                'label' => __('Url', 'plugin-name'),
+                'type' => Controls_Manager::TEXT,
+                'default' => __("https://avechat-hubspot.api.aveonline.co/api/form-campana/ave-chat/create-contact", 'plugin-name'),
+            ]
+        );
+        $this->add_control(
+            'api_redirect',
+            [
+                'label' => __('Redirect', 'plugin-name'),
+                'type' => Controls_Manager::TEXT,
+                'default' => __('https://api.whatsapp.com/send/?phone=573054202125&text=Hola+%2AAveonline%2A.+Necesito+m%C3%A1s+informaci%C3%B3n+sobre+Aveonline+https%3A%2F%2Faveonline.co&type=phone_number&app_absent=0', 'plugin-name'),
+            ]
+        );
+        $this->end_controls_section();
+    }
     protected function _register_controls()
     {
         $this->_register_controls_before_mesage();
         $this->_register_controls_formulario();
+        $this->_register_controls_api();
 
 
         $this->addStyleControler('Messages', 'Messages', 'AVWW_Component_Form_messages');

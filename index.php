@@ -18,6 +18,7 @@ if (!function_exists( 'is_plugin_active' ))
 define("AVWW_KEY",'AVWW');
 define("AVWW_SLUG",'aveonline-widget-whatsapp');
 define("AVWW_LOG",false);
+define("AVWW_RUTE",'avww');
 define("AVWW_DIR",plugin_dir_path( __FILE__ ));
 define("AVWW_URL",plugin_dir_url(__FILE__));
 define("AVWW_BASENAME",plugin_basename(__FILE__));
@@ -73,6 +74,7 @@ github_updater_plugin_wordpress([
     ]
 ]);
 
+require_once AVWW_DIR . 'src/api/_.php';
 require_once AVWW_DIR . 'src/component/_.php';
 
 function AVWW_register_AveFormWhatsapp($widgets_manager) {

@@ -165,7 +165,6 @@ class AVWW_AveFormWhatsapp extends Widget_Base
                 'label' => __('Lista de Mensajes', 'plugin-name'),
                 'type' => \Elementor\Controls_Manager::REPEATER,
                 'fields' => $repeater->get_controls(),
-                'title_field' => '{{{ label }}}',
             ]
         );
 
@@ -200,7 +199,7 @@ class AVWW_AveFormWhatsapp extends Widget_Base
         $this->add_control(
             'btn',
             [
-                'label' => __('Continuar y hablar por WhatsApp 🚀', 'plugin-name'),
+                'label' => __('Boton', 'plugin-name'),
                 'type' => Controls_Manager::TEXT,
                 'default' => __('Continuar y hablar por WhatsApp 🚀', 'plugin-name'),
             ]

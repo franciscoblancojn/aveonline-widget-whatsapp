@@ -244,6 +244,9 @@ function AVWW_Component_Form($settings)
                 placeholder="<?= ($settings["phone_placeholder"] ?? "+57 | Teléfono*") ?>"
                 class="AVWW_Component_Form_input" />
         </label>
+        <div class="AVWW_Component_Form_text">
+             <?= ($settings["form_text"] ?? "") ?>
+        </div>
         <div class="AVWW_Component_Form_content_btn">
             <button id="AVWW_Component_Form_btn" class="AVWW_Component_Form_btn" onclick="AVWW_onSendContact()">
                 <?= ($settings["btn"] ?? "Buscar") ?>
@@ -280,7 +283,7 @@ function AVWW_Component_Form($settings)
         .AVWW_Component_Form_content_input_phone{
             display: grid;
             grid-template-columns: auto 1fr;
-            gap: 1rem;
+            gap: .5rem;
         }
 
         @keyframes AVWW-to-rotate {

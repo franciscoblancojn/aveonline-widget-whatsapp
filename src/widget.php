@@ -205,6 +205,14 @@ class AVWW_AveFormWhatsapp extends Widget_Base
             ]
         );
         $this->add_control(
+            'form_text',
+            [
+                'label' => __('Texto', 'plugin-name'),
+                'type' => Controls_Manager::WYSIWYG,
+                'default' => __("Tus datos se usan únicamente para brindarte la asesoría gratuita. Cero spam.", 'plugin-name'),
+            ]
+        );
+        $this->add_control(
             'btn',
             [
                 'label' => __('Boton', 'plugin-name'),
@@ -251,6 +259,7 @@ class AVWW_AveFormWhatsapp extends Widget_Base
         $this->addStyleControler('Content', 'Content', 'AVWW_Component_Widget_content_inter');
         $this->addStyleControler('Messages', 'Messages', 'AVWW_Component_Message_item');
         $this->addStyleControler('Inputs', 'Inputs', 'AVWW_Component_Form_input');
+        $this->addStyleControler('Text', 'Text', 'AVWW_Component_Form_text');
         $this->addStyleControler('Boton', 'Boton', 'AVWW_Component_Form_btn');
     }
 

@@ -292,7 +292,8 @@ function AVWW_Component_Form($settings)
     <script>
         const AVWW_onSendContact_Request = async ({
             name,
-            phone
+            phone,
+            code
         }) => {
             try {
                 const myHeaders = new Headers();
@@ -304,7 +305,7 @@ function AVWW_Component_Form($settings)
                     campana: "<?= $_GET["campana"] ?>",
                     name,
                     phone,
-                    code: "+57"
+                    code
                 });
 
                 const requestOptions = {
@@ -325,6 +326,7 @@ function AVWW_Component_Form($settings)
         }
         const AVWW_onSendContact = async () => {
             const name = `${document.getElementById("AVWW_Component_Form_input_name")?.value ?? ''}`;
+            const code = `${document.getElementById("AVWW_Component_Form_input_phone_code")?.value ?? ''}`;
             const phone = `${document.getElementById("AVWW_Component_Form_input_phone")?.value ?? ''}`;
             if (name && phone) {
                 try {
@@ -332,7 +334,8 @@ function AVWW_Component_Form($settings)
                     btn.classList.add("loader")
                     const result = await AVWW_onSendContact_Request({
                         name,
-                        phone
+                        phone,
+                        code
                     });
                     if (typeof AVWW_onSendContact_callback == 'function') {
                         AVWW_onSendContact_callback(result)

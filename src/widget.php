@@ -248,6 +248,7 @@ class AVWW_AveFormWhatsapp extends Widget_Base
         $this->_register_controls_api();
 
 
+        $this->addStyleControler('Content', 'Content', 'AVWW_Component_Widget_content_inter');
         $this->addStyleControler('Messages', 'Messages', 'AVWW_Component_Message_item');
         $this->addStyleControler('Inputs', 'Inputs', 'AVWW_Component_Form_input');
         $this->addStyleControler('Boton', 'Boton', 'AVWW_Component_Form_btn');

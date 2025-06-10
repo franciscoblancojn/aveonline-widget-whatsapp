@@ -189,6 +189,14 @@ class AVWW_AveFormWhatsapp extends Widget_Base
             ]
         );
         $this->add_control(
+            'code_placeholder',
+            [
+                'label' => __('Codigo', 'plugin-name'),
+                'type' => Controls_Manager::TEXT,
+                'default' => __('Codigo', 'plugin-name'),
+            ]
+        );
+        $this->add_control(
             'phone_placeholder',
             [
                 'label' => __('Telefono', 'plugin-name'),
@@ -240,8 +248,8 @@ class AVWW_AveFormWhatsapp extends Widget_Base
         $this->_register_controls_api();
 
 
-        $this->addStyleControler('Messages', 'Messages', 'AVWW_Component_Form_messages');
-        $this->addStyleControler('Inputs', 'Inputs', 'AVWW_Component_Form_inputs');
+        $this->addStyleControler('Messages', 'Messages', 'AVWW_Component_Message_item');
+        $this->addStyleControler('Inputs', 'Inputs', 'AVWW_Component_Form_input');
         $this->addStyleControler('Boton', 'Boton', 'AVWW_Component_Form_btn');
     }
 

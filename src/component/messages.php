@@ -19,6 +19,13 @@ function AVWW_Component_Messages($settings)  {
         .AVWW_Component_Messages{
             display:grid;
             gap:1rem;
+            p:last-of-type{
+                margin-bottom: 0;
+            }
+        }
+        .AVWW_Component_Message_item{
+            max-width: 90%;
+            margin-left: auto;
         }
     </style>
     <?php

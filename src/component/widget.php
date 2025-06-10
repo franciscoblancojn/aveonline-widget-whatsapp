@@ -8,7 +8,10 @@ function AVWW_Component_Widget($settings)  {
         <?=AVWW_Component_Form($settings)?>
     </div>
     <style>
-        
+        .AVWW_Component_Widget{
+            display: grid;
+            gap: 1rem;
+        }
 
     </style>
     <?php

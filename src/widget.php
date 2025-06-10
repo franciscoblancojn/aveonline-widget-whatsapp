@@ -287,9 +287,9 @@ class AVWW_AveFormWhatsapp extends Widget_Base
 
 
         $this->addStyleControler('Content', 'Content', 'AVWW_Component_Widget_content_inter');
-        $this->addStyleControler('Avatar Name', 'Avatar Name', 'AVWW_Component_Top_name');
-        $this->addStyleControler('Avatar Online', 'Avatar Online', 'AVWW_Component_Top_online');
-        $this->addStyleControler('Avatar Close', 'Avatar Close', 'AVWW_Component_Top_close');
+        $this->addStyleControler('Avatar_Name', 'Avatar Name', 'AVWW_Component_Top_name');
+        $this->addStyleControler('Avatar_Online', 'Avatar Online', 'AVWW_Component_Top_online');
+        $this->addStyleControler('Avatar_Close', 'Avatar Close', 'AVWW_Component_Top_close');
         $this->addStyleControler('Messages', 'Messages', 'AVWW_Component_Message_item');
         $this->addStyleControler('Inputs', 'Inputs', 'AVWW_Component_Form_input');
         $this->addStyleControler('Text', 'Text', 'AVWW_Component_Form_text');

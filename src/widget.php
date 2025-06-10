@@ -7,6 +7,7 @@ if (!defined('ABSPATH')) exit; // Bloquear acceso directo
 use Elementor\Group_Control_Dimensions;
 use Elementor\Group_Control_Background;
 use Elementor\Group_Control_Border;
+use Elementor\Controls_Manager;
 
 class AVWW_AveFormWhatsapp extends Widget_Base
 {
@@ -126,7 +127,7 @@ class AVWW_AveFormWhatsapp extends Widget_Base
 
     }
 
-    private function _register_controls_before_mesage()
+    private function _register_controls_before_message()
     {
 
         $this->start_controls_section(
@@ -170,7 +171,6 @@ class AVWW_AveFormWhatsapp extends Widget_Base
 
         $this->end_controls_section();
     }
-
     private function _register_controls_formulario()
     {
         $this->start_controls_section(
@@ -249,14 +249,47 @@ class AVWW_AveFormWhatsapp extends Widget_Base
         );
         $this->end_controls_section();
     }
+    private function _register_controls_avatar()
+    {
+        $this->start_controls_section(
+            'content_section_avatar',
+            [
+                'label' => __('Avatar', 'plugin-name'),
+                'tab' => Controls_Manager::TAB_CONTENT,
+            ]
+        );
+        $this->add_control(
+            'avatar_name',
+            [
+                'label' => __('Nombre', 'plugin-name'),
+                'type' => Controls_Manager::TEXT,
+                'default' => __("Alan", 'plugin-name'),
+            ]
+        );
+        $this->add_control(
+            'avatar_img',
+            [
+                'label' => __('Imagen', 'plugin-name'),
+                'type' => Controls_Manager::MEDIA,
+                'default' => [
+                    'url' => AVWW_URL."src/img/avatar.png"
+                ],
+            ]
+        );
+        $this->end_controls_section();
+    }
     protected function _register_controls()
     {
-        $this->_register_controls_before_mesage();
+        $this->_register_controls_avatar();
+        $this->_register_controls_before_message();
         $this->_register_controls_formulario();
         $this->_register_controls_api();
 
 
         $this->addStyleControler('Content', 'Content', 'AVWW_Component_Widget_content_inter');
+        $this->addStyleControler('Avatar Name', 'Avatar Name', 'AVWW_Component_Top_name');
+        $this->addStyleControler('Avatar Online', 'Avatar Online', 'AVWW_Component_Top_online');
+        $this->addStyleControler('Avatar Close', 'Avatar Close', 'AVWW_Component_Top_close');
         $this->addStyleControler('Messages', 'Messages', 'AVWW_Component_Message_item');
         $this->addStyleControler('Inputs', 'Inputs', 'AVWW_Component_Form_input');
         $this->addStyleControler('Text', 'Text', 'AVWW_Component_Form_text');

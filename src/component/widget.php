@@ -40,7 +40,7 @@ function AVWW_Component_Widget($settings)
         }
         .AVWW_Component_Widget{
             position: fixed;
-            z-index: 99;
+            z-index: 99999;
             right: 1rem;
             bottom: 1rem;
         }

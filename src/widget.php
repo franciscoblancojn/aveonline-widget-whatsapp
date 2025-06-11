@@ -14,7 +14,7 @@ class AVWW_AveFormWhatsapp extends Widget_Base
 
     public function get_name()
     {
-        return 'ave_form_guias';
+        return 'ave_form_whatsapp';
     }
 
     public function get_title()

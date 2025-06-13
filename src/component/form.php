@@ -321,7 +321,7 @@ function AVWW_Component_Form($settings)
                 const response = await fetch("/wp-json/<?= AVWW_RUTE ?>/send-contact", requestOptions)
                 const result = await response.json()
 
-                // window.location.href = "<?= $settings["api_redirect"] ?>"
+                window.location.href = "<?= $settings["api_redirect"] ?>"
                 return response
             } catch (e) {
                 throw e
@@ -329,11 +329,11 @@ function AVWW_Component_Form($settings)
         }
         const AVWW_onSendContact = async () => {
             const name = `${document.getElementById("AVWW_Component_Form_input_name")?.value ?? ''}`;
-            const code = `${document.getElementById("AVWW_Component_Form_input_phone_code")?.value ?? ''}`;
+            const code = `${document.getElementById("AVWW_Component_Form_input_phone_code")?.value ?? '+57'}`;
             const phone = `${document.getElementById("AVWW_Component_Form_input_phone")?.value ?? ''}`;
             if (name && phone) {
+                const btn = document.getElementById("AVWW_Component_Form_btn")
                 try {
-                    const btn = document.getElementById("AVWW_Component_Form_btn")
                     btn.classList.add("loader")
                     const result = await AVWW_onSendContact_Request({
                         name,

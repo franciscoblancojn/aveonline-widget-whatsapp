@@ -220,6 +220,40 @@ class AVWW_AveFormWhatsapp extends Widget_Base
                 'default' => __('Continuar y hablar por WhatsApp 🚀', 'plugin-name'),
             ]
         );
+
+        // Inicializar el repeater
+        $repeater = new \Elementor\Repeater();
+
+        // Campo Label (Texto)
+        $repeater->add_control(
+            'text',
+            [
+                'label' => __('Nombre', 'plugin-name'),
+                'type' => Controls_Manager::TEXT,
+            ]
+        );
+        // Agregar el repeater a la sección principal
+        $this->add_control(
+            'campana_items',
+            [
+                'label' => __('Lista de Campañas Permitidas por url', 'plugin-name'),
+                'type' => \Elementor\Controls_Manager::REPEATER,
+                'fields' => $repeater->get_controls(),
+                'title_field' => '{{ text }}',
+                'default' => [
+                    [ 'text' => 'envios-nacionales' ],
+                    [ 'text' => 'envios-nacionales-ads' ],
+                    [ 'text' => 'envios-nacionales-1000' ],
+                    [ 'text' => 'envios-nacionales-gads' ],
+                    [ 'text' => 'envios-contraentrega-gads' ],
+                    [ 'text' => 'envios-internacionales-gads' ],
+                    [ 'text' => 'crea-tu-cuenta-billetera-aveonline' ],
+                    [ 'text' => 'crea-una-cuenta-gratis-para-tu-ecommerce-360' ],
+                    [ 'text' => 'logistica-inteligente-par-tu-tienda-dropshipping' ],
+                ],
+            ]
+        );
+
         $this->end_controls_section();
     }
     private function _register_controls_api()

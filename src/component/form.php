@@ -17,9 +17,8 @@ function AVWW_Component_Form($settings)
                 id="AVWW_Component_Form_input_code"
                 type="tel"
                 placeholder="<?= ($settings["code_placeholder"] ?? "Codigo") ?>"
-                class="AVWW_Component_Form_input" 
-                default="+57"
-            >
+                class="AVWW_Component_Form_input"
+                default="+57">
                 <option value="+57">+57</option>
                 <option value="+93">+93</option>
                 <option value="+355">+355</option>
@@ -245,7 +244,7 @@ function AVWW_Component_Form($settings)
                 class="AVWW_Component_Form_input" />
         </label>
         <div class="AVWW_Component_Form_text">
-             <?= ($settings["form_text"] ?? "") ?>
+            <?= ($settings["form_text"] ?? "") ?>
         </div>
         <div class="AVWW_Component_Form_content_btn">
             <button id="AVWW_Component_Form_btn" class="AVWW_Component_Form_btn" onclick="AVWW_onSendContact()">
@@ -280,7 +279,8 @@ function AVWW_Component_Form($settings)
             position: absolute;
             inset: 0;
         }
-        .AVWW_Component_Form_content_input_phone{
+
+        .AVWW_Component_Form_content_input_phone {
             display: grid;
             grid-template-columns: auto 1fr;
             gap: .5rem;
@@ -302,10 +302,29 @@ function AVWW_Component_Form($settings)
                 const myHeaders = new Headers();
                 myHeaders.append("Content-Type", "application/json");
 
+                const listCampanas = [
+                    <?php
+                    foreach ($settings['campana_items'] as $k => $value) {
+                        $text = $value["text"];
+                        echo '"' . $text . '",';
+                    }
+                    ?>
+                ];
+                let campana = "<?= $_GET["campana"] ?? "" ?>";
+                if (!campana || campana == "" || campana == "undefined") {
+                    for (let i = 0; i < listCampanas.length; i++) {
+                        if (window.location.href.includes(`/${listCampanas[i]}/`)) {
+                            campana = listCampanas[i];
+                            break;
+                        }
+                    }
+                }
+
+
                 const url = "<?= $settings["api_url"] ?? "https://avechat-hubspot.api.aveonline.co/api/form-campana/ave-chat/create-contact" ?>";
                 const raw = JSON.stringify({
                     url,
-                    campana: "<?= $_GET["campana"] ?>",
+                    campana,
                     name,
                     phone,
                     code

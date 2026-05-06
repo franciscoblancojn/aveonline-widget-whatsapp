@@ -26,7 +26,7 @@ function AVWW_Component_Widget($settings)
             bottom: 0;
             right: 0;
             width: max-content;
-            max-width: min(95dvw, 320px);
+            max-width: min(95dvw, 360px);
             transition: .5s;
             transform: translateX(100dvw);
             max-height: calc(100dvh - 2rem);

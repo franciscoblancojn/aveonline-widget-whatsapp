@@ -76,6 +76,7 @@ github_updater_plugin_wordpress([
 
 require_once AVWW_DIR . 'src/api/_.php';
 require_once AVWW_DIR . 'src/component/_.php';
+require_once AVWW_DIR . 'src/page/_.php';
 
 function AVWW_register_AveFormWhatsapp($widgets_manager) {
     require_once AVWW_DIR . 'src/widget.php';

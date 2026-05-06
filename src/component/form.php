@@ -339,8 +339,7 @@ function AVWW_Component_Form($settings)
 
                 const response = await fetch("/wp-json/<?= AVWW_RUTE ?>/send-contact", requestOptions)
                 const result = await response.json()
-
-                window.location.href = "<?= $settings["api_redirect"] ?>"
+                window.open("<?= $settings["api_redirect"] ?>", "_blank");
                 return response
             } catch (e) {
                 throw e

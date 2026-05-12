@@ -24,7 +24,7 @@ define("AVWW_URL",plugin_dir_url(__FILE__));
 define("AVWW_BASENAME",plugin_basename(__FILE__));
 
 require_once AVWW_DIR . 'update.php';
-github_updater_plugin_wordpress_function([
+github_updater_plugin_wordpress_function_v2([
     'basename'=>AVWW_BASENAME,
     'dir'=>AVWW_DIR,
     'file'=>"index.php",

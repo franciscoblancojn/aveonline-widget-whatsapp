@@ -1,6 +1,6 @@
 {
   "name": "aveonline-widget-whatsapp",
-  "version": "2.0.2",
+  "version": "2.0.3",
   "description": "Widget para mostrar guias de aveonline en elementor.",
   "main": "index.js",
   "scripts": {

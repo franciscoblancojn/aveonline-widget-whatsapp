@@ -15,6 +15,9 @@ if (!function_exists("github_updater_plugin_wordpress_function_v2")) {
 
         $plugin_file = $plugin_slug . '/' . $plugin_file_php;
 
+        /**
+         * CHECK UPDATE
+         */
         add_filter(
             'site_transient_update_plugins',
             function ($transient) use (
@@ -82,7 +85,7 @@ if (!function_exists("github_updater_plugin_wordpress_function_v2")) {
                     $plugin_data['Version'];
 
                 /**
-                 * COMPARAR VERSIONES
+                 * COMPARAR
                  */
                 if (
                     version_compare(
@@ -96,12 +99,7 @@ if (!function_exists("github_updater_plugin_wordpress_function_v2")) {
                         'slug' => $plugin_slug,
                         'plugin' => $plugin_file,
                         'new_version' => $latest_version,
-
-                        /**
-                         * IMPORTANTE
-                         */
                         'package' => $release->zipball_url,
-
                         'url' => 'https://github.com/' . $config['path_repository'],
                     ];
                 }
@@ -111,7 +109,7 @@ if (!function_exists("github_updater_plugin_wordpress_function_v2")) {
         );
 
         /**
-         * RENOMBRAR HASH ZIP
+         * RENOMBRAR SOLO ESTE PLUGIN
          */
         add_filter(
             'upgrader_source_selection',
@@ -120,19 +118,29 @@ if (!function_exists("github_updater_plugin_wordpress_function_v2")) {
                 $remote_source,
                 $upgrader,
                 $hook_extra
-            ) use ($plugin_slug) {
+            ) use ($plugin_slug, $plugin_file) {
 
                 global $wp_filesystem;
 
                 /**
-                 * carpeta final
+                 * validar plugin actual
+                 */
+                if (
+                    empty($hook_extra['plugin']) ||
+                    $hook_extra['plugin'] !== $plugin_file
+                ) {
+                    return $source;
+                }
+
+                /**
+                 * carpeta final correcta
                  */
                 $corrected_source =
                     trailingslashit($remote_source) .
                     $plugin_slug;
 
                 /**
-                 * borrar existente
+                 * borrar carpeta previa
                  */
                 if (
                     $wp_filesystem->exists(
@@ -147,12 +155,16 @@ if (!function_exists("github_updater_plugin_wordpress_function_v2")) {
                 }
 
                 /**
-                 * mover hash => plugin real
+                 * mover carpeta hash
                  */
-                $wp_filesystem->move(
+                $result = $wp_filesystem->move(
                     $source,
                     $corrected_source
                 );
+
+                if (!$result) {
+                    return $source;
+                }
 
                 return $corrected_source;
             },
@@ -189,8 +201,7 @@ if (!function_exists("github_updater_plugin_wordpress_function_v2")) {
                         tr.plugin-update-tr[data-slug="'.$plugin_slug.'"] a + *{
                             display:none;
                         }
-                    </style>
-                    ';
+                    </style>';
 
                 return $links;
             },
@@ -201,6 +212,8 @@ if (!function_exists("github_updater_plugin_wordpress_function_v2")) {
         /**
          * REFRESH
          */
-        delete_site_transient('update_plugins');
+        add_action('admin_init', function () {
+            delete_site_transient('update_plugins');
+        });
     }
 }

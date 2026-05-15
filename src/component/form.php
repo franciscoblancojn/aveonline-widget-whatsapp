@@ -360,6 +360,8 @@ function AVWW_Component_Form($settings)
                     if (typeof AVWW_onSendContact_callback == 'function') {
                         AVWW_onSendContact_callback(result)
                     }
+                } catch (e) {
+                    console.log(e)
                 } finally {
                     btn.classList.remove("loader")
                     window.open("<?= $settings["api_redirect"] ?>", "_blank");

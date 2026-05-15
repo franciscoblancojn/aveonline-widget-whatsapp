@@ -342,8 +342,6 @@ function AVWW_Component_Form($settings)
                 return response
             } catch (e) {
                 throw e
-            } finally {
-                window.open("<?= $settings["api_redirect"] ?>", "_blank");
             }
         }
         const AVWW_onSendContact = async () => {
@@ -364,6 +362,7 @@ function AVWW_Component_Form($settings)
                     }
                 } finally {
                     btn.classList.remove("loader")
+                    window.open("<?= $settings["api_redirect"] ?>", "_blank");
                 }
             }
         }

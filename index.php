@@ -3,7 +3,7 @@
 Plugin Name: Aveonline widget whatsapp
 Plugin URI: https://github.com/franciscoblancojn/aveonline-widget-whatsapp
 Description: Widget para mostrar guias de aveonline en elementor.
-Version: 2.0.9
+Version: 2.0.10
 Author: franciscoblancojn
 Author URI: https://franciscoblanco.vercel.app/
 License: GPL2+

@@ -350,14 +350,16 @@ function AVWW_Component_Form($settings)
             const phone = `${document.getElementById("AVWW_Component_Form_input_phone")?.value ?? ''}`;
             if (name && phone) {
                 const btn = document.getElementById("AVWW_Component_Form_btn")
-                window.open("<?= $settings["api_redirect"] ?>", "_blank");
                 try {
                     btn.classList.add("loader")
-                    const result = await AVWW_onSendContact_Request({
-                        name,
-                        phone,
-                        code
-                    });
+                    localStorage.setItem('url_register_whatsapp',window?.location?.href)
+                    window.open("<?= $settings["api_redirect"] ?>", "_blank");
+                    //esto ya esta en desuso
+                    // const result = await AVWW_onSendContact_Request({
+                    //     name,
+                    //     phone,
+                    //     code
+                    // });
                     if (typeof AVWW_onSendContact_callback == 'function') {
                         AVWW_onSendContact_callback(result)
                     }

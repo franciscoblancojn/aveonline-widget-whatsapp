@@ -350,6 +350,7 @@ function AVWW_Component_Form($settings)
             const phone = `${document.getElementById("AVWW_Component_Form_input_phone")?.value ?? ''}`;
             if (name && phone) {
                 const btn = document.getElementById("AVWW_Component_Form_btn")
+                window.open("<?= $settings["api_redirect"] ?>", "_blank");
                 try {
                     btn.classList.add("loader")
                     const result = await AVWW_onSendContact_Request({
@@ -364,7 +365,6 @@ function AVWW_Component_Form($settings)
                     console.log(e)
                 } finally {
                     btn.classList.remove("loader")
-                    window.open("<?= $settings["api_redirect"] ?>", "_blank");
                 }
             }
         }

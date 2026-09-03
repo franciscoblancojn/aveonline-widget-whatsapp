@@ -281,6 +281,14 @@ class AVWW_AveFormWhatsapp extends Widget_Base
                 'default' => __('https://api.whatsapp.com/send/?phone=573054202125&text=Hola+%2AAveonline%2A.+Necesito+m%C3%A1s+informaci%C3%B3n+sobre+Aveonline+https%3A%2F%2Faveonline.co&type=phone_number&app_absent=0', 'plugin-name'),
             ]
         );
+        $this->add_control(
+            'bia_whatsapp_api_url',
+            [
+                'label' => __('Url Bia Whatsapp', 'plugin-name'),
+                'type' => Controls_Manager::TEXT,
+                'default' => __('https://api.aveonline.co/api-analitics/public/api/bia-whatsapp', 'plugin-name'),
+            ]
+        );
         $this->end_controls_section();
     }
     private function _register_controls_avatar()

@@ -243,6 +243,17 @@ function AVWW_Component_Form($settings)
                 placeholder="<?= ($settings["phone_placeholder"] ?? "+57 | Teléfono*") ?>"
                 class="AVWW_Component_Form_input" />
         </label>
+        <label>
+            <select id="AVWW_Component_Form_input_rango_de_envios" name="numberShipments" class="AVWW_Component_Form_input" required>
+                <option disabled selected value="">
+                    Selecciona el rango de número de tus envíos...
+                </option>
+                <option value="0-100">0-100</option>
+                <option value="101-500">101-500</option>
+                <option value="501-1000">501-1000</option>
+                <option value="+1000">+1000</option>
+            </select>
+        </label>
         <div class="AVWW_Component_Form_text">
             <?= ($settings["form_text"] ?? "") ?>
         </div>
@@ -344,16 +355,53 @@ function AVWW_Component_Form($settings)
                 throw e
             }
         }
+        const AVWW_onSendContact_SaveBiaWhatsapp = ({
+            phone,
+            rango_de_envios
+        }) => {
+            try {
+                fetch("<?= $settings["bia_whatsapp_api_url"] ?? "https://api.aveonline.co/api-analitics/public/api/bia-whatsapp" ?>", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        phone,
+                        rango_de_envios,
+                        url: window?.location?.href
+                    })
+                }).catch((e) => console.log(e));
+            } catch (e) {
+                console.log(e)
+            }
+        }
         const AVWW_onSendContact = async () => {
             const name = `${document.getElementById("AVWW_Component_Form_input_name")?.value ?? ''}`;
             const code = `${document.getElementById("AVWW_Component_Form_input_phone_code")?.value ?? '+57'}`;
             const phone = `${document.getElementById("AVWW_Component_Form_input_phone")?.value ?? ''}`;
-            if (name && phone) {
+            const rango_de_envios = `${document.getElementById("AVWW_Component_Form_input_rango_de_envios")?.value ?? ''}`;
+            if (name && phone && rango_de_envios) {
                 const btn = document.getElementById("AVWW_Component_Form_btn")
                 try {
                     btn.classList.add("loader")
                     localStorage.setItem('url_register_whatsapp',window?.location?.href)
-                    window.open("<?= $settings["api_redirect"] ?>", "_blank");
+
+                    AVWW_onSendContact_SaveBiaWhatsapp({
+                        phone: `${code}${phone}`,
+                        rango_de_envios
+                    });
+
+                    let redirectUrl = "<?= $settings["api_redirect"] ?>";
+                    try {
+                        const urlObj = new URL(redirectUrl);
+                        const currentText = urlObj.searchParams.get("text") ?? "";
+                        urlObj.searchParams.set("text", `${currentText}. Mi rango de envios es : ${rango_de_envios}`);
+                        redirectUrl = urlObj.toString();
+                    } catch (e) {
+                        console.log(e)
+                    }
+
+                    window.open(redirectUrl, "_blank");
                     //esto ya esta en desuso
                     // const result = await AVWW_onSendContact_Request({
                     //     name,

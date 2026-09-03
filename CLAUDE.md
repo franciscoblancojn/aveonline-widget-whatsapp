@@ -26,9 +26,13 @@ crear/editar archivos, y correr los scripts de build.
 
 Cuando termines un cambio: deja el working tree con las modificaciones sin stagear,
 resume qué cambiaste y qué falta, y espera a que la persona revise y decida si
-commitea/pushea. Nunca uses `npm run push-tag` ni `npm run push` (ver
-`package.json`) — ambos hacen `git commit`/`git push` internamente y están
-pensados para ejecución manual del mantenedor, no para el asistente.
+commitea/pushea. Nunca uses `npm run push-v`, `npm run push-tag` ni `npm run push`
+(ver `package.json`) — los tres terminan haciendo `git commit`/`git tag`/`git push`
+internamente. El `deny` de `.claude/settings.json` solo intercepta invocaciones
+directas de `git ...`; una llamada a `npm run push-tag` no la detecta porque el
+comando visible es `npm`, no `git`. Por eso esta regla es de comportamiento, no
+solo de configuración: nunca ejecutes esos tres scripts, sin importar si la
+config técnicamente los dejaría pasar.
 
 ## Gestión de dependencias — usar SIEMPRE el gestor de paquetes
 
@@ -91,10 +95,17 @@ libs/                       # NO EDITAR A MANO — generado por composer/npm (ve
 ## Versionado y release
 
 La versión vive en 3 sitios que deben quedar sincronizados: `index.php` (header
-`Version:`), `package.json` y `README.md`. `npm run sync:version` los sincroniza
-a partir de `index.php` (fuente de verdad). Esto es seguro de correr — no toca git.
-Lo que sigue después (tag + commit + push, vía `npm run push-tag`) es responsabilidad
-manual del mantenedor, nunca del asistente.
+`Version:`), `package.json` (`version`) y `README.md` (línea `**Versión
+estable:**`). `index.php` es la fuente de verdad.
 
-Nota: `package.json` referencia `scripts/bump-version.sh` (script `push-v`) que no
-existe en el repo actualmente — no lo asumas disponible.
+- `npm run sync:version` (= `sync:package` + `sync:readme`) propaga la versión de
+  `index.php` a `package.json` y `README.md`. Seguro de correr — no toca git.
+- `scripts/bump-version.sh` (invocado como `npm run push-v -- major|minor|patch`)
+  incrementa la versión en `index.php` y al final intenta `npm run push-tag`.
+- `npm run push-tag` hace `sync:version` **y además** `git add . && git commit &&
+  git tag && git push` (dos remotos en el caso de `npm run push`). Esto es
+  responsabilidad manual del mantenedor: si el usuario corre `push-v`/`push-tag`
+  él mismo en su terminal está fuera del alcance de `.claude/settings.json` (esa
+  config solo bloquea las llamadas de Claude a la herramienta Bash), pero **tú
+  nunca debes invocar `push-v` ni `push-tag`** — solo `sync:version` si te piden
+  sincronizar versión sin publicar.

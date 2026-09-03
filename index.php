@@ -14,6 +14,8 @@ Text Domain: aveonline-widget-whatsapp
 if (!function_exists('is_plugin_active'))
     require_once(ABSPATH . '/wp-admin/includes/plugin.php');
 
+require_once __DIR__ . '/libs/autoload.php';
+
 //AVWW_
 define("AVWW_KEY", 'AVWW');
 define("AVWW_SLUG", 'aveonline-widget-whatsapp');
@@ -23,8 +25,10 @@ define("AVWW_DIR", plugin_dir_path(__FILE__));
 define("AVWW_URL", plugin_dir_url(__FILE__));
 define("AVWW_BASENAME", plugin_basename(__FILE__));
 
-require_once AVWW_DIR . 'update.php';
-github_updater_plugin_wordpress_v1([
+
+use franciscoblancojn\wordpress_utils\FWUUpdate;
+
+FWUUpdate::init([
     'basename' => AVWW_BASENAME,
     'dir' => AVWW_DIR,
     'file' => "index.php",
@@ -73,6 +77,11 @@ github_updater_plugin_wordpress_v1([
         "9"
     ]
 ]);
+use franciscoblancojn\wordpress_utils\FWUSystemLog;
+
+FWUSystemLog::init(AVWW_KEY);
+
+
 
 require_once AVWW_DIR . 'src/api/_.php';
 require_once AVWW_DIR . 'src/component/_.php';

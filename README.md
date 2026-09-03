@@ -29,7 +29,7 @@ Aveonline Widget WhatsApp proporciona un widget para **Elementor** que muestra u
 - Selector de código de país con más de 100 países.
 - Integración con **AveChat (LucidBot)** para crear y gestionar usuarios.
 - Integración con **Aveonline API** para creación de leads.
-- **Auto-actualización desde GitHub:** El plugin verifica automáticamente nuevas versiones en el repositorio de GitHub cada 10 minutos.
+- **Auto-actualización desde GitHub:** El plugin verifica nuevas versiones en el repositorio de GitHub cada vez que se visita la pantalla de **Plugins** o de actualización en el admin (con caché de 1 minuto para no golpear el rate limit de la API de GitHub).
 - Página de administración para configurar el Token de acceso a la API de AveChat.
 
 ---
@@ -132,7 +132,24 @@ Las campañas preconfiguradas incluyen: `envios-nacionales`, `envios-nacionales-
 
 ## Auto-actualización desde GitHub
 
-El plugin incluye un sistema de actualización automática que consulta el repositorio de GitHub cada 10 minutos. Si hay una nueva versión disponible, aparecerá en la pantalla de **Plugins** de WordPress con un enlace **"Actualizar"**.
+El plugin incluye un sistema de actualización automática (`FWUUpdate`, de la librería `franciscoblancojn/wordpress_utils`) que consulta el repositorio de GitHub al visitar la pantalla de **Plugins**. Si hay una nueva versión disponible, aparecerá con un enlace **"Actualizar"**.
+
+---
+
+## Desarrollo
+
+Este repositorio incluye contexto pensado para asistentes de codificación (Claude Code):
+
+- **`CLAUDE.md`** — convenciones del proyecto, política de git (no se automatizan `add`/`commit`/`merge`/`push`, son acciones manuales) y cómo gestionar dependencias siempre vía Composer/npm (nunca editando `libs/` a mano).
+- **`docs/wordpress-utils.md`** — referencia completa de las clases de `franciscoblancojn/wordpress_utils` (`FWUPage`, `FWURespond`, `FWUSystemLog`, `FWUUpdate`, `FWUModal`, `FWUCollapse`, `FWUTooltip`, `FWUExportImport`) usadas para construir cualquier interfaz de administración, logs o el actualizador.
+- **`.claude/skills/`** — flujos guiados para tareas frecuentes: `wp-admin-page` (nuevas pantallas/pestañas de admin siguiendo el patrón de la librería) y `release-version` (sincronizar la versión sin tocar git).
+
+### Comandos de build (`package.json`)
+
+- `npm run install` — instala dependencias PHP con Composer y las mueve a `libs/`.
+- `npm run update` — reinstala `libs/` desde cero.
+- `npm run optimize` — regenera el autoloader optimizado sin tocar `libs/`.
+- `npm run sync:version` — sincroniza la versión entre `index.php`, `package.json` y `README.md` (no toca git).
 
 ---
 

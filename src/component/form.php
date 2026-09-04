@@ -267,10 +267,19 @@ function AVWW_Component_Form($settings)
         .AVWW_Component_Form {
             display: grid;
             gap: .5rem;
+            width: 100%;
+            overflow:hidden;
+        }
+        .AVWW_Component_Form label{
+            width: 100%;
+            overflow:hidden;
+            max-width: 100%;
         }
 
         .AVWW_Component_Form_input {
             outline: none;
+            width: 100%;
+            max-width: 100%;
         }
 
         .AVWW_Component_Form_btn.loader {
@@ -293,8 +302,14 @@ function AVWW_Component_Form($settings)
 
         .AVWW_Component_Form_content_input_phone {
             display: grid;
-            grid-template-columns: auto 1fr;
+            grid-template-columns: 90px 1fr;
             gap: .5rem;
+        }
+        .AVWW_Component_Form_content_input_phone{
+
+        }
+        #AVWW_Component_Form_input_phone{
+            max-width:calc(100% - 100px);
         }
 
         @keyframes AVWW-to-rotate {

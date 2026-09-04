@@ -309,7 +309,7 @@ function AVWW_Component_Form($settings)
 
         }
         #AVWW_Component_Form_input_phone{
-            max-width:calc(100% - 100px);
+            max-width:100%;
         }
 
         @keyframes AVWW-to-rotate {

@@ -1,7 +1,7 @@
 # Aveonline Widget WhatsApp
 
 **Contribuyentes:** Francisco Blanco
-**Versión estable:** 2.1.3
+**Versión estable:** 2.1.4
 **Requiere al menos:** WordPress 5.0
 **Probado hasta:** WordPress 5.9
 **Licencia:** GPLv2 o posterior

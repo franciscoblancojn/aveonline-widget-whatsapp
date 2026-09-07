@@ -406,7 +406,7 @@ function AVWW_Component_Form($settings)
                         rango_de_envios
                     });
 
-                    let redirectUrl = "<?= $settings["api_redirect"] ?>";
+                    let redirectUrl = <?= json_encode(html_entity_decode($settings["api_redirect"] ?? "", ENT_QUOTES)) ?>;
                     try {
                         const urlObj = new URL(redirectUrl);
                         const currentText = urlObj.searchParams.get("text") ?? "";

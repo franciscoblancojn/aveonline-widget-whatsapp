@@ -408,6 +408,14 @@ function AVWW_Component_Form($settings)
 
                     let redirectUrl = <?= json_encode(html_entity_decode($settings["api_redirect"] ?? "", ENT_QUOTES)) ?>;
                     try {
+                        // por si el valor llega con entidades HTML (&amp; en vez de &), se decodifica también en el cliente
+                        const decodeHtmlEntities = (str) => {
+                            const el = document.createElement("textarea");
+                            el.innerHTML = str;
+                            return el.value;
+                        };
+                        redirectUrl = decodeHtmlEntities(redirectUrl);
+
                         const urlObj = new URL(redirectUrl);
                         const currentText = urlObj.searchParams.get("text") ?? "";
                         urlObj.searchParams.set("text", `${currentText}. Mi rango de envios es : ${rango_de_envios}`);

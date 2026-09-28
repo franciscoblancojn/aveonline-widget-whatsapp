@@ -414,7 +414,8 @@ function AVWW_Component_Form($settings)
                 .map((v) => (v ?? "").trim())
                 .find((v) => /^[A-Za-z0-9_]{4,}$/.test(v));
 
-            return id ? `AV-${red}-${id.slice(0, 32)}` : "AV-OR-WEB";
+            if (id) return `AV-${red}-${id.slice(0, 32)}`;
+            return source ? `AV-${red}-SINID` : "AV-OR-SITIO";
         }
         const AVWW_onSendContact = async () => {
             const name = `${document.getElementById("AVWW_Component_Form_input_name")?.value ?? ''}`;

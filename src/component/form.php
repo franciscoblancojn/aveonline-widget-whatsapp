@@ -409,12 +409,12 @@ function AVWW_Component_Form($settings)
             };
             const red = redes[source] ?? "OR";
 
-            const isValidId = (v) => /^[A-Za-z0-9_]{4,32}$/.test(v);
+            // solo letras, numeros y guion bajo, minimo 4; si pasa de 32 se recorta
             const id = [params.get("utm_content"), params.get("utm_campaign")]
                 .map((v) => (v ?? "").trim())
-                .find(isValidId);
+                .find((v) => /^[A-Za-z0-9_]{4,}$/.test(v));
 
-            return id ? `AV-${red}-${id}` : `AV-${red}`;
+            return id ? `AV-${red}-${id.slice(0, 32)}` : "AV-OR-WEB";
         }
         const AVWW_onSendContact = async () => {
             const name = `${document.getElementById("AVWW_Component_Form_input_name")?.value ?? ''}`;

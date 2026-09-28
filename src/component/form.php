@@ -248,10 +248,10 @@ function AVWW_Component_Form($settings)
                 <option disabled selected value="">
                     Selecciona el rango de número de tus envíos...
                 </option>
-                <option value="0-100">0-100</option>
-                <option value="101-500">101-500</option>
-                <option value="501-1000">501-1000</option>
-                <option value="+1000">+1000</option>
+                <option value="1-20">1-20</option>
+                <option value="21-50">21-50</option>
+                <option value="50-500">50-500</option>
+                <option value="+500">+500</option>
             </select>
         </label>
         <div class="AVWW_Component_Form_text">

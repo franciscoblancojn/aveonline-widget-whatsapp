@@ -390,6 +390,32 @@ function AVWW_Component_Form($settings)
                 console.log(e)
             }
         }
+        // genera el codigo de trazabilidad "AV-<RED>-<ID>" a partir de los UTM de la url
+        const AVWW_getTrackingCode = (href) => {
+            let params;
+            try {
+                params = new URL(href).searchParams;
+            } catch (e) {
+                params = new URLSearchParams();
+            }
+            const source = (params.get("utm_source") ?? "").trim().toLowerCase();
+            const redes = {
+                facebook: "ME",
+                instagram: "ME",
+                meta: "ME",
+                google: "GO",
+                tiktok: "TT",
+                linkedin: "LI",
+            };
+            const red = redes[source] ?? "OR";
+
+            const isValidId = (v) => /^[A-Za-z0-9_]{4,32}$/.test(v);
+            const id = [params.get("utm_content"), params.get("utm_campaign")]
+                .map((v) => (v ?? "").trim())
+                .find(isValidId);
+
+            return id ? `AV-${red}-${id}` : `AV-${red}`;
+        }
         const AVWW_onSendContact = async () => {
             const name = `${document.getElementById("AVWW_Component_Form_input_name")?.value ?? ''}`;
             const code = `${document.getElementById("AVWW_Component_Form_input_phone_code")?.value ?? '+57'}`;
@@ -418,7 +444,8 @@ function AVWW_Component_Form($settings)
 
                         const urlObj = new URL(redirectUrl);
                         const currentText = urlObj.searchParams.get("text") ?? "";
-                        urlObj.searchParams.set("text", `${currentText}. Mi rango de envios es : ${rango_de_envios}`);
+                        const trackingCode = AVWW_getTrackingCode(localStorage.getItem('url_register_whatsapp') ?? window?.location?.href);
+                        urlObj.searchParams.set("text", `${currentText}. Mi rango de envios es : ${rango_de_envios} · ${trackingCode}`);
                         redirectUrl = urlObj.toString();
                     } catch (e) {
                         console.log(e)

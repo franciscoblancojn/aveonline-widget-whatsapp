@@ -376,6 +376,10 @@ function AVWW_Component_Form($settings)
             rango_de_envios
         }) => {
             try {
+                let url_landing = null;
+                try {
+                    url_landing = localStorage.getItem('url_register_whatsapp');
+                } catch (e) {}
                 fetch("<?= $settings["bia_whatsapp_api_url"] ?? "https://api.aveonline.co/api-analitics/public/api/bia-whatsapp" ?>", {
                     method: "POST",
                     headers: {
@@ -384,7 +388,8 @@ function AVWW_Component_Form($settings)
                     body: JSON.stringify({
                         phone,
                         rango_de_envios,
-                        url: window?.location?.href
+                        url: window?.location?.href,
+                        url_landing: url_landing || window?.location?.href
                     })
                 }).catch((e) => console.log(e));
             } catch (e) {

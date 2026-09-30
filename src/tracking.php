@@ -11,12 +11,15 @@ if (!defined('ABSPATH')) exit;
  * para que el widget arme el codigo de origen aunque navegue a otras
  * paginas antes de escribir. Una pagina sin UTM no pisa la URL guardada.
  *
+ * Se imprime en el footer de todo el sitio y tambien dentro del JS del
+ * formulario (por si el tema no llama wp_footer); correrlo dos veces no
+ * tiene efecto extra.
+ *
  */
 
-function AVWW_tracking_save_landing_url()
+function AVWW_tracking_landing_url_js()
 {
-?>
-    <script>
+    return '
         (function() {
             try {
                 const key = "url_register_whatsapp";
@@ -28,7 +31,11 @@ function AVWW_tracking_save_landing_url()
                 }
             } catch (e) {}
         })();
-    </script>
-<?php
+    ';
 }
-add_action('wp_head', 'AVWW_tracking_save_landing_url', 1);
+
+function AVWW_tracking_save_landing_url()
+{
+    echo '<script>' . AVWW_tracking_landing_url_js() . '</script>';
+}
+add_action('wp_footer', 'AVWW_tracking_save_landing_url', 1);

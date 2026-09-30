@@ -319,6 +319,7 @@ function AVWW_Component_Form($settings)
         }
     </style>
     <script>
+        <?= AVWW_tracking_landing_url_js() ?>
         const AVWW_onSendContact_Request = async ({
             name,
             phone,

@@ -9,7 +9,8 @@ if (!defined('ABSPATH')) exit;
  *
  * Guarda en localStorage la URL con la que el usuario entra al sitio,
  * para que el widget arme el codigo de origen aunque navegue a otras
- * paginas antes de escribir. Una pagina sin UTM no pisa la URL guardada.
+ * paginas antes de escribir. Solo la reemplaza una url con utm_* o con un
+ * click id de anuncio (gclid, fbclid, ttclid, gbraid, wbraid).
  *
  * Se imprime en el footer de todo el sitio y tambien dentro del JS del
  * formulario (por si el tema no llama wp_footer); correrlo dos veces no
@@ -24,9 +25,11 @@ function AVWW_tracking_landing_url_js()
             try {
                 const key = "url_register_whatsapp";
                 const href = window.location.href;
-                const hasUtm = Array.from(new URL(href).searchParams.keys())
-                    .some((k) => k.toLowerCase().startsWith("utm_"));
-                if (hasUtm || !localStorage.getItem(key)) {
+                const clickIds = ["gclid", "fbclid", "ttclid", "gbraid", "wbraid"];
+                const hasTracking = Array.from(new URL(href).searchParams.keys())
+                    .map((k) => k.toLowerCase())
+                    .some((k) => k.startsWith("utm_") || clickIds.includes(k));
+                if (hasTracking || !localStorage.getItem(key)) {
                     localStorage.setItem(key, href);
                 }
             } catch (e) {}

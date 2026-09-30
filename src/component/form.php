@@ -390,7 +390,7 @@ function AVWW_Component_Form($settings)
                 console.log(e)
             }
         }
-        // genera el codigo de trazabilidad "AV-<RED>-<ID>" a partir de los UTM de la url
+        // genera el codigo de trazabilidad "AVE-<CANAL>-<CAMPANA>" a partir de los UTM de la url
         const AVWW_getTrackingCode = (href) => {
             let params;
             try {
@@ -399,23 +399,29 @@ function AVWW_Component_Form($settings)
                 params = new URLSearchParams();
             }
             const source = (params.get("utm_source") ?? "").trim().toLowerCase();
-            const redes = {
-                facebook: "ME",
-                instagram: "ME",
-                meta: "ME",
-                google: "GO",
+            const canales = {
+                facebook: "MT",
+                instagram: "MT",
+                meta: "MT",
+                google: "GG",
                 tiktok: "TT",
                 linkedin: "LI",
             };
-            const red = redes[source] ?? "OR";
 
-            // solo letras, numeros y guion bajo, minimo 4; si pasa de 32 se recorta
-            const id = [params.get("utm_content"), params.get("utm_campaign")]
-                .map((v) => (v ?? "").trim())
-                .find((v) => /^[A-Za-z0-9_]{4,}$/.test(v));
+            // sin tildes, mayusculas, todo lo que no sea letra o numero pasa a "_", sin "_" repetidos ni en los extremos, maximo 32
+            const normalizar = (v) => (v ?? "")
+                .normalize("NFD")
+                .replace(/[\u0300-\u036f]/g, "")
+                .toUpperCase()
+                .replace(/[^A-Z0-9]+/g, "_")
+                .replace(/^_+/, "")
+                .slice(0, 32)
+                .replace(/_+$/, "");
+            const id = normalizar(params.get("utm_campaign")) || normalizar(params.get("utm_content"));
 
-            if (id) return `AV-${red}-${id.slice(0, 32)}`;
-            return source ? `AV-${red}-SINID` : "AV-OR-SITIO";
+            if (!source && !id) return "AVE-WEB-SITIO";
+            const canal = source ? (canales[source] ?? "OT") : "OT";
+            return `AVE-${canal}-${id || "SINID"}`;
         }
         const AVWW_onSendContact = async () => {
             const name = `${document.getElementById("AVWW_Component_Form_input_name")?.value ?? ''}`;
@@ -426,7 +432,6 @@ function AVWW_Component_Form($settings)
                 const btn = document.getElementById("AVWW_Component_Form_btn")
                 try {
                     btn.classList.add("loader")
-                    localStorage.setItem('url_register_whatsapp',window?.location?.href)
 
                     AVWW_onSendContact_SaveBiaWhatsapp({
                         phone: `${code}${phone}`,
@@ -445,8 +450,12 @@ function AVWW_Component_Form($settings)
 
                         const urlObj = new URL(redirectUrl);
                         const currentText = urlObj.searchParams.get("text") ?? "";
-                        const trackingCode = AVWW_getTrackingCode(localStorage.getItem('url_register_whatsapp') ?? window?.location?.href);
-                        urlObj.searchParams.set("text", `${currentText}. Mi rango de envios es : ${rango_de_envios} · ${trackingCode}`);
+                        let landingUrl = null;
+                        try {
+                            landingUrl = localStorage.getItem('url_register_whatsapp');
+                        } catch (e) {}
+                        const trackingCode = AVWW_getTrackingCode(landingUrl || window?.location?.href);
+                        urlObj.searchParams.set("text", `${currentText}. Mi rango de envios es : ${rango_de_envios} (${trackingCode})`);
                         redirectUrl = urlObj.toString();
                     } catch (e) {
                         console.log(e)

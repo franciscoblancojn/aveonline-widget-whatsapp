@@ -86,6 +86,7 @@ FWUSystemLog::init(AVWW_KEY);
 require_once AVWW_DIR . 'src/api/_.php';
 require_once AVWW_DIR . 'src/component/_.php';
 require_once AVWW_DIR . 'src/page/_.php';
+require_once AVWW_DIR . 'src/tracking.php';
 
 function AVWW_register_AveFormWhatsapp($widgets_manager)
 {

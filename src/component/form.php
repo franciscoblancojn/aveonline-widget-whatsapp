@@ -320,57 +320,6 @@ function AVWW_Component_Form($settings)
     </style>
     <script>
         <?= AVWW_tracking_landing_url_js() ?>
-        const AVWW_onSendContact_Request = async ({
-            name,
-            phone,
-            code
-        }) => {
-            try {
-                const myHeaders = new Headers();
-                myHeaders.append("Content-Type", "application/json");
-
-                const listCampanas = [
-                    <?php
-                    foreach ($settings['campana_items'] as $k => $value) {
-                        $text = $value["text"];
-                        echo '"' . $text . '",';
-                    }
-                    ?>
-                ];
-                let campana = "<?= $_GET["campana"] ?? "" ?>";
-                if (!campana || campana == "" || campana == "undefined") {
-                    for (let i = 0; i < listCampanas.length; i++) {
-                        if (window.location.href.includes(`/${listCampanas[i]}/`)) {
-                            campana = listCampanas[i];
-                            break;
-                        }
-                    }
-                }
-
-
-                const url = "<?= $settings["api_url"] ?? "https://avechat-hubspot.api.aveonline.co/api/form-campana/ave-chat/create-contact" ?>";
-                const raw = JSON.stringify({
-                    url,
-                    campana,
-                    name,
-                    phone,
-                    code
-                });
-
-                const requestOptions = {
-                    method: "POST",
-                    headers: myHeaders,
-                    body: raw,
-                    redirect: "follow"
-                };
-
-                const response = await fetch("/wp-json/<?= AVWW_RUTE ?>/send-contact", requestOptions)
-                const result = await response.json()
-                return response
-            } catch (e) {
-                throw e
-            }
-        }
         const AVWW_onSendContact_SaveBiaWhatsapp = ({
             phone,
             rango_de_envios
@@ -409,10 +358,25 @@ function AVWW_Component_Form($settings)
                 facebook: "MT",
                 instagram: "MT",
                 meta: "MT",
+                fb: "MT",
+                ig: "MT",
                 google: "GG",
+                adwords: "GG",
+                google_ads: "GG",
+                googleads: "GG",
                 tiktok: "TT",
                 linkedin: "LI",
             };
+            // si el utm_source no se reconoce (o no hay), el canal sale del click id del anuncio
+            const clickIds = {
+                gclid: "GG",
+                gbraid: "GG",
+                wbraid: "GG",
+                fbclid: "MT",
+                ttclid: "TT",
+            };
+            const keys = Array.from(params.keys()).map((k) => k.toLowerCase());
+            const canalClickId = Object.keys(clickIds).find((k) => keys.includes(k));
 
             // sin tildes, mayusculas, todo lo que no sea letra o numero pasa a "_", sin "_" repetidos ni en los extremos, maximo 32
             const normalizar = (v) => (v ?? "")
@@ -425,13 +389,13 @@ function AVWW_Component_Form($settings)
                 .replace(/_+$/, "");
             const id = normalizar(params.get("utm_campaign")) || normalizar(params.get("utm_content"));
 
-            if (!source && !id) return "AVE-WEB-SITIO";
-            const canal = source ? (canales[source] ?? "OT") : "OT";
+            if (!source && !canalClickId && !id) return "AVE-WEB-SITIO";
+            const canal = canales[source] ?? (canalClickId ? clickIds[canalClickId] : "OT");
             return `AVE-${canal}-${id || "SINID"}`;
         }
         const AVWW_onSendContact = async () => {
             const name = `${document.getElementById("AVWW_Component_Form_input_name")?.value ?? ''}`;
-            const code = `${document.getElementById("AVWW_Component_Form_input_phone_code")?.value ?? '+57'}`;
+            const code = `${document.getElementById("AVWW_Component_Form_input_code")?.value ?? '+57'}`;
             const phone = `${document.getElementById("AVWW_Component_Form_input_phone")?.value ?? ''}`;
             const rango_de_envios = `${document.getElementById("AVWW_Component_Form_input_rango_de_envios")?.value ?? ''}`;
             if (name && phone && rango_de_envios) {
@@ -468,14 +432,8 @@ function AVWW_Component_Form($settings)
                     }
 
                     window.open(redirectUrl, "_blank");
-                    //esto ya esta en desuso
-                    // const result = await AVWW_onSendContact_Request({
-                    //     name,
-                    //     phone,
-                    //     code
-                    // });
                     if (typeof AVWW_onSendContact_callback == 'function') {
-                        AVWW_onSendContact_callback(result)
+                        AVWW_onSendContact_callback()
                     }
                 } catch (e) {
                     console.log(e)
